@@ -3,14 +3,16 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
     xmlns:context="http://www.springframework.org/schema/context"  
     xmlns:mvc="http://www.springframework.org/schema/mvc"  
-    xmlns:p="http://www.springframework.org/schema/p"  
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:sec="http://www.springframework.org/schema/security"
     xsi:schemaLocation="http://www.springframework.org/schema/beans  
             http://www.springframework.org/schema/beans/spring-beans.xsd  
-            http://www.springframework.org/schema/mvc  
+            http://www.springframework.org/schema/mvc
             http://www.springframework.org/schema/mvc/spring-mvc.xsd  
             http://www.springframework.org/schema/context  
-            http://www.springframework.org/schema/context/spring-context.xsd"  
-    default-lazy-init="true">  
+            http://www.springframework.org/schema/context/spring-context.xsd
+            http://www.springframework.org/schema/security
+            http://www.springframework.org/schema/security/spring-security.xsd">  
   
     <!-- 对包中的所有类进行扫描，以完成Bean创建和自动依赖注入的功能-->      
     <context:component-scan base-package="smvcTest.cmd"/>  
@@ -25,8 +27,70 @@
        <property name="suffix" value=".jsp" />                <!-- 模板文件的后缀-->  
     </bean>
  
- 	<mvc:resources mapping="/bootstrap/**" location="/WEB-INF/bootstrap/" cache-period="31536000"/>
-	<mvc:resources mapping="/css/**" location="/WEB-INF/css/" cache-period="31536000"/>
-	<mvc:resources mapping="/js/**" location="/WEB-INF/js/" cache-period="31536000"/>
+ 	<mvc:annotation-driven />
+ 	<mvc:resources mapping="/bootstrap/**" location="/bootstrap/"/>
+	<mvc:resources mapping="/css/**" location="/css/"/>
+	<mvc:resources mapping="/js/**" location="/js/"/>
+	<mvc:resources mapping="/img/**" location="/img/"/>
  
+ 
+	 <!-- session timeout interceptor begin TODO-->
+	  
+    <!-- <sec:http access-decision-manager-ref="accessDecisionManager"  
+        entry-point-ref="authenticationEntryPoint">  
+          
+        <sec:access-denied-handler ref="accessDeniedHandler"/>  
+          
+        <sec:logout invalidate-session="true" logout-url="/logout"  
+            logout-success-url="/login.jsp" />  
+      
+        <sec:session-management session-authentication-strategy-ref="concurrentSessionControlStrategy" />  
+          
+        <sec:remember-me   
+            authentication-success-handler-ref="authenticationSuccessHandler"  
+            data-source-ref="dataSource"  
+            user-service-ref="userDetailService"  
+        />  
+          
+        <sec:custom-filter ref="filterSecurityInterceptor" before="FILTER_SECURITY_INTERCEPTOR"/>  
+        <sec:custom-filter ref="captchaAuthenticaionFilter" position="FORM_LOGIN_FILTER"/>  
+        <sec:custom-filter ref="concurrencyFilter" position="CONCURRENT_SESSION_FILTER"/>  
+    </sec:http>  
+      
+    <bean id="captchaAuthenticaionFilter" class="com.zrhis.system.security.CaptchaAuthenticationFilter">  
+        <property name="authenticationManager" ref="authenticationManager" />  
+        <property name="authenticationFailureHandler" ref="authenticationFailureHandler" />  
+        <property name="authenticationSuccessHandler" ref="authenticationSuccessHandler" />  
+        <property name="filterProcessesUrl" value="/login.do" />  
+        <property name="sessionAuthenticationStrategy" ref="concurrentSessionControlStrategy" />  
+    </bean>  
+      
+    <bean id="authenticationSuccessHandler" class="com.zrhis.system.security.SavedRequestLoginSuccessHandler">  
+        <property name="defaultTargetUrl" value="/index.jsp" />  
+        <property name="forwardToDestination" value="true" />  
+        <property name="alwaysUseDefaultTargetUrl" value="false" />  
+    </bean>  
+    <bean id="authenticationFailureHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">  
+        <property name="defaultFailureUrl" value="/login.jsp" />  
+    </bean>  
+      
+    <bean id="authenticationEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">  
+        <property name="loginFormUrl" value="/login.jsp" />  
+    </bean>  
+      
+    <bean id="concurrencyFilter" class="org.springframework.security.web.session.ConcurrentSessionFilter">  
+        <constructor-arg name="sessionRegistry" ref="sessionRegistry" />  
+        <constructor-arg name="expiredUrl" value="/sessionOut.jsp" />  
+    </bean>  
+      
+    <bean id="concurrentSessionControlStrategy"  
+        class="org.springframework.security.web.authentication.session.ConcurrentSessionControlStrategy">  
+        <constructor-arg name="sessionRegistry" ref="sessionRegistry" />  
+        <property name="maximumSessions" value="1"></property>  
+    </bean>  
+      
+    <bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl" /> -->  
+	
+	<!-- session timeout interceptor end-->
+	
 </beans>

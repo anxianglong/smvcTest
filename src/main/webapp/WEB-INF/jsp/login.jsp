@@ -12,10 +12,10 @@
     <title>开始</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="../css/signin.css" rel="stylesheet">
+    <link href="css/login.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy this line! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -31,10 +31,10 @@
 
     <div class="container">
 
-      <form class="form-signin" role="form">
+      <form class="form-signin" role="form" action="login/login">
         <h2 class="form-signin-heading">从这里开始</h2>
-        <input type="email" class="form-control" placeholder="Email address" required autofocus>
-        <input type="password" class="form-control" placeholder="Password" required>
+        <input type="text" name="userName" class="form-control" placeholder="UserName" required autofocus>
+        <input type="password" name="passWord" class="form-control" placeholder="Password" required>
         <label class="checkbox">
           <input type="checkbox" value="remember-me"> 别忘了我
         </label>
@@ -47,6 +47,11 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     
-    <a href="http://localhost:8080/smvcTest/test/exceptionTest" class="testLogin">异常处理演示</a>
+    <a href="http://localhost:8080/smvcTest/test/exceptionTest" >异常处理演示</a>
+    
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery-1.11.3.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="bootstrap/js/bootstrap.min.js"></script>
   </body>
 </html>

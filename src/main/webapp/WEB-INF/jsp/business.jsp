@@ -7,6 +7,8 @@
 <title>欢迎</title>
 </head>
 <body>
-    COME ON BABY!${userName}!
+	    恭喜！登录成功啦！<br>
+	    用户名：${username}<br>
+	    密码：${password}
 </body>
 </html>
