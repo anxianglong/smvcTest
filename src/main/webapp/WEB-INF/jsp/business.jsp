@@ -8,7 +8,7 @@
 </head>
 <body>
 	    恭喜！登录成功啦！<br>
-	    用户名：${username}<br>
-	    密码：${password}
+	    用户名：${userName}<br>
+	    密码：${passWord}
 </body>
 </html>

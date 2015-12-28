@@ -2,11 +2,12 @@ package smvcTest.cmd;
 
 import java.sql.SQLException;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
 import smvcTest.util.BaseController;
 
@@ -15,15 +16,18 @@ import smvcTest.util.BaseController;
 public class LoginController extends BaseController {
 
 	@RequestMapping("/login")
-	public String login(@RequestParam("userName") String strUserName, @RequestParam("passWord") String strPassword, Model model) {
+	public String login(@RequestParam("userName") String strUserName, @RequestParam("passWord") String strPassword, Model model, HttpServletRequest request) {
 		
 		if(strUserName.equals("admin")&&strPassword.equals("123")){
 			
-			model.addAttribute("username", strUserName);
-			model.addAttribute("password", strPassword);
+			request.getSession().setAttribute("userName", strUserName);
+			request.getSession().setAttribute("passWord", strPassword);
+			
+			model.addAttribute("userName", strUserName);
+			model.addAttribute("passWord", strPassword);
 			return "business";
 		}
-		return "login";
+		return "index";
 	}
 
 	@RequestMapping("/exceptionTest")

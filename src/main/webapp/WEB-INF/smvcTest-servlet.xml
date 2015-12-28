@@ -36,6 +36,13 @@
  
 	 <!-- session timeout interceptor begin TODO-->
 	  
+	  <mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/*.jsp"/>
+			<bean class="smvcTest.util.SessionTimeOut" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+	  
     <!-- <sec:http access-decision-manager-ref="accessDecisionManager"  
         entry-point-ref="authenticationEntryPoint">  
           
@@ -61,7 +68,7 @@
         <property name="authenticationManager" ref="authenticationManager" />  
         <property name="authenticationFailureHandler" ref="authenticationFailureHandler" />  
         <property name="authenticationSuccessHandler" ref="authenticationSuccessHandler" />  
-        <property name="filterProcessesUrl" value="/login.do" />  
+        <property name="filterProcessesUrl" value="login/login" />  
         <property name="sessionAuthenticationStrategy" ref="concurrentSessionControlStrategy" />  
     </bean>  
       
@@ -89,7 +96,7 @@
         <property name="maximumSessions" value="1"></property>  
     </bean>  
       
-    <bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl" /> -->  
+    <bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl" />  -->
 	
 	<!-- session timeout interceptor end-->
 	

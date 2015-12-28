@@ -8,10 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-public class SessionTimeOut implements HandlerInterceptor{
+public class SessionTimeOut extends HandlerInterceptorAdapter{
 	
 	private List<String> allowUrls; 
 	/**
@@ -20,31 +19,14 @@ public class SessionTimeOut implements HandlerInterceptor{
 	 */
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
-		String requestUrl = request.getRequestURI();    
-        
-        /** 
-         * 对所有的请求，*.f进行拦截 
-         */  
-        if(requestUrl.indexOf(".f")!=-1){  
-            /** 
-             * 登录页login/login不进行拦截 
-             */  
-            for(String url : allowUrls) {    
-                if(requestUrl.endsWith(url)) {    
-                    return true;    
-                }    
-            }   
-              
-            Object obj = request.getSession().getServletContext().getAttribute("user");  
-            if(obj != null) {    
-                return true;    
-            }else {    
-                response.setHeader("sessionstatus", "timeout");  
-                return false;  
-            }    
-        }else{  
-            return true;  
+		Object obj = request.getSession().getAttribute("userName");  
+        if(obj==null){  
+            request.getRequestDispatcher("login/login").forward(request, response);   
+        return false;  
         }  
+        else{  
+            return super.preHandle(request, response, handler);  
+        }
 		
 	}
 	
@@ -60,22 +42,11 @@ public class SessionTimeOut implements HandlerInterceptor{
             out.flush();  
             out.close();  
         }else { // http 超时处理  
-            response.sendRedirect(request.getContextPath() + "/login.do");  
+            response.sendRedirect(request.getContextPath() + "login/login");  
         }  
   
     }
 
-	public void afterCompletion(HttpServletRequest arg0, HttpServletResponse arg1, Object arg2, Exception arg3)
-			throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void postHandle(HttpServletRequest arg0, HttpServletResponse arg1, Object arg2, ModelAndView arg3)
-			throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
 
 	public List<String> getAllowUrls() {
 		return allowUrls;

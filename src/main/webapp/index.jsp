@@ -1,7 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-   request.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(request,response);
+	String userName = "";
+	String passWord = "";
+	String context = request.getContextPath();
+	request.setAttribute("context",context);
+	if(request.getSession().getAttribute("userName")!=null&&request.getSession().getAttribute("passWord")!=null){
+		userName = request.getSession().getAttribute("userName").toString();
+		passWord = request.getSession().getAttribute("passWord").toString();
+	}
  %>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,7 +20,7 @@
     <meta name="author" content="">
     <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
 
-    <title>Jumbotron Template for Bootstrap</title>
+    <title>主页</title>
 
     <!-- Bootstrap core CSS -->
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -29,6 +36,26 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/jquery-1.11.3.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    
+    
+    <script type="text/javascript">
+     var strUserName = '<%=userName%>';
+     var strPassWord = '<%=passWord%>';
+     $(document).ready(function(){
+	     if(strUserName!=''&&strPassWord!=''){
+	    	 $('#formId').hide();
+	    	 $('#showLoginId').show();
+	     }else{
+	    	 $('#formId').show();
+	    	 $('#showLoginId').hide();
+	     }
+     });
+    </script>
   </head>
 
   <body>
@@ -42,18 +69,34 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Project name</a>
+          <a class="navbar-brand" href="#">SpringMVC</a>
+          <a id="spanId" class="navbar-brand" href="#"></a>
         </div>
         <div class="navbar-collapse collapse">
-          <form class="navbar-form navbar-right" role="form" action="login/login">
+        <!-- 登录 -->
+          <form class="navbar-form navbar-right" role="form" action="login/login" id="formId">
             <div class="form-group">
-              <input type="text" placeholder="Email" class="form-control" name="email">
+              <input type="text" placeholder="用户名" class="form-control" name="userName" required value="${userName }">
             </div>
             <div class="form-group">
-              <input type="password" placeholder="Password" class="form-control" name="passWord">
+              <input type="password" placeholder="密码" class="form-control" name="passWord" required value="${passWord }">
             </div>
             <button type="submit" class="btn btn-success">开始</button>
           </form>
+          <!-- 登录成功 -->
+          <div id="showLoginId">
+	          <ul class="nav navbar-nav navbar-right">
+			      <li class="dropdown">
+			        <a href="#" class="dropdown-toggle" data-toggle="dropdown">你好，<%=userName %> <b class="caret"></b></a>
+			        <ul class="dropdown-menu">
+			          <li><a href="<%= context%>">设置</a></li>
+			          <li><a href="#">用户详情</a></li>
+			          <li class="divider"></li>
+			          <li><a href="#">登出</a></li>
+			        </ul>
+			      </li>
+			    </ul>
+        	</div>
         </div><!--/.navbar-collapse -->
       </div>
     </div>
@@ -93,12 +136,6 @@
         <p>&copy; Company 2016</p>
       </footer>
     </div> <!-- /container -->
-
-
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="js/jquery-1.11.3.min.js"></script>
-    <script src="bootstrap/js/bootstrap.min.js"></script>
+    
   </body>
 </html>
